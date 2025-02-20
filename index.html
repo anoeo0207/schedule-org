@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Công Tác</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: #003366;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 2vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2vh;
+            border-bottom: 0.2vh solid #0066cc;
+            padding-bottom: 1vh;
+        }
+
+        .logo {
+            width: 8vh;
+            height: 8vh;
+            background-color: #fff;
+            border-radius: 50%;
+            margin-right: 2vh;
+        }
+
+        .title {
+            color: #00ccff;
+            font-size: 3vh;
+        }
+
+        .subtitle {
+            color: #00ccff;
+            font-size: 2vh;
+        }
+
+        .schedule-title {
+            font-size: 2.5vh;
+            margin-bottom: 1vh;
+            color: #00ccff;
+        }
+
+        .fixed-header {
+            background-color: #004080;
+            padding: 1vh;
+            margin-bottom: 1vh;
+            border-bottom: 0.2vh solid #0066cc;
+            display: grid;
+            grid-template-columns: 10% 60% 10% 20%;
+            gap: 1vh;
+        }
+
+        .fixed-header div {
+            text-align: center;
+            font-weight: bold;
+            color: #00ccff;
+            font-size: 2vh;
+        }
+
+        .schedule-container {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .schedule-content {
+            animation: scroll 30s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        td {
+            padding: 1vh;
+            border-bottom: 0.1vh solid #0066cc;
+            font-size: 2vh;
+            vertical-align: top;
+        }
+
+        td:nth-child(1) { width: 10%; }
+        td:nth-child(2) { width: 60%; }
+        td:nth-child(3) { width: 10%; text-align: center; }
+        td:nth-child(4) { width: 20%; }
+
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: #004080;
+            padding: 1vh;
+            margin-top: 2vh;
+        }
+
+        .marquee {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+            font-size: 2vh;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @media (min-aspect-ratio: 16/9) {
+            .container {
+                max-width: 177.78vh;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"></div>
+            <div>
+                <div class="title">UBND QUẬN LÊ CHÂN</div>
+                <div class="subtitle">TP. HẢI PHÒNG</div>
+            </div>
+        </div>
+
+        <div class="schedule-title">LỊCH CÔNG TÁC (Tuần 17/2-23/2/2025)</div>
+
+        <div class="fixed-header">
+            <div>Ngày</div>
+            <div>Nội dung</div>
+            <div>Giờ</div>
+            <div>Địa điểm</div>
+        </div>
+
+        <div class="schedule-container">
+            <div class="schedule-content">
+                <table>
+                    <tr>
+                        <td>17.2.2025</td>
+                        <td>Hiệu trưởng làm việc chủ sinh viên</td>
+                        <td>14h30</td>
+                        <td>A101, NBDK</td>
+                    </tr>
+                    <tr>
+                        <td>18.2.2025</td>
+                        <td>Hiệu trưởng họp với ĐHQGHN về các chỉ tiêu đào tạo và chỉ tiêu tuyển sinh</td>
+                        <td>14h30</td>
+                        <td>VNU-E5</td>
+                    </tr>
+                    <tr>
+                        <td>19.2.2025</td>
+                        <td>Hiệu trưởng tham dự chương trình hội thảo và thúc đẩy hợp tác đào tạo mầm lực phát triểnNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</td>
+                        <td>14h30</td>
+                        <td>Hội trường</td>
+                    </tr>
+                    <tr>
+                        <td>20.2.2025</td>
+                        <td>Họp Đảng ủy về Tình hình triển khai đào trưởng</td>
+                        <td>13h30</td>
+                        <td>P212-E3</td>
+                    </tr>
+                    <tr>
+                        <td>21.2.2025</td>
+                        <td>Hội nghị tổng kết năm học và triển khai kế hoạch mới</td>
+                        <td>08h30</td>
+                        <td>Hội trường lớn</td>
+                    </tr>
+                    <tr>
+                        <td>22.2.2025</td>
+                        <td>Lễ ký kết hợp tác với doanh nghiệp công nghệ</td>
+                        <td>10h00</td>
+                        <td>Phòng họp A</td>
+                    </tr>
+                    <tr>
+                        <td>23.2.2025</td>
+                        <td>Seminar khoa học công nghệ mới</td>
+                        <td>14h00</td>
+                        <td>Phòng hội thảo</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="marquee-container">
+            <div class="marquee">
+                Kết quả xét bổ nhiệm lại chức danh - TIÊU ĐIỂM - Sự kiện tại Mỹ - Thông báo tuyển sinh năm học mới
+            </div>
+        </div>
+    </div>
+</body>
+</html>
