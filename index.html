@@ -82,5 +82,27 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('fetch.php') 
+                .then(response => response.json()) 
+                .then(data => {
+                    const table = document.querySelector(".schedule-content table");
+                    table.innerHTML = ``;
+                    data.forEach(event => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${event.Ngay}</td>
+                            <td>${event.TenSuKien}</td>
+                            <td>${event.ThoiGian}</td>
+                            <td>${event.DiaDiem}</td>
+                        `;
+                        table.appendChild(row);
+                    });
+                })
+                .catch(error => console.error("Lỗi tải dữ liệu:", error));
+        });
+    </script>
+    
 </body>
 </html>

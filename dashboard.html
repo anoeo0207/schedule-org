@@ -6,6 +6,7 @@
     <title>Quản Lý Lịch Công Tác</title>
     <link rel="stylesheet" href="style/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="header-container">
@@ -55,7 +56,6 @@
             </div>
         </div>
 
-        <!-- Phần table giữ nguyên -->
         <div class="table-container">
             <table id="eventsTable">
                 <thead>
@@ -68,61 +68,100 @@
                         <th>Thao tác</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Họp Ban Giám đốc</td>
-                        <td>2024-02-25</td>
-                        <td>09:00</td>
-                        <td>Phòng họp A</td>
-                        <td>
-                            <button class="btn-icon edit" title="Chỉnh sửa">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon delete" title="Xóa">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Đào tạo nhân viên mới</td>
-                        <td>2024-02-26</td>
-                        <td>14:00</td>
-                        <td>Phòng đào tạo</td>
-                        <td>
-                            <button class="btn-icon edit" title="Chỉnh sửa">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon delete" title="Xóa">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                <tbody id="eventTableBody">
+
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Your existing script -->
     <script>
-        // Xử lý tìm kiếm
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('fetch.php')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById("eventTableBody");
+
+                    tableBody.innerHTML = "";
+
+                    data.forEach((event, index) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${event.TenSuKien} ${event.id}</td>
+                            <td>${event.Ngay}</td>
+                            <td>${event.ThoiGian}</td>
+                            <td>${event.DiaDiem}</td>
+                            <td>
+                                <button class="btn-icon edit" title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon delete" title="Xóa" onclick="deleteEvent('${event.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error("Lỗi tải dữ liệu:", error));
+        });
+
+        function deleteEvent(id) {
+            Swal.fire({
+                title: `Bạn có chắc chắn muốn xóa?`,
+                text: "Bạn có muốn xóa nội dung này không?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Đồng ý",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("delete.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ id: id }) // Gửi id dạng chuỗi (UUID)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Lỗi kết nối server");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Phản hồi từ server:", data);
+                        if (data.success) {
+                            Swal.fire("Đã xóa!", "Sự kiện đã được xóa.", "success").then(() => {
+                                location.reload(); // Tải lại trang sau khi xóa thành công
+                            });
+                        } else {
+                            Swal.fire("Lỗi!", "Lỗi khi xóa: " + data.error, "error");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire("Lỗi!", "Lỗi xóa sự kiện: " + error.message, "error");
+                    });
+                }
+            });
+        }
+        
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchText = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#eventsTable tbody tr');
-            
+
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(searchText) ? '' : 'none';
             });
         });
-    
-        // Xử lý sắp xếp
+
         document.getElementById('sortSelect').addEventListener('change', function(e) {
             const sortBy = e.target.value;
             const tbody = document.querySelector('#eventsTable tbody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
-    
+
             rows.sort((a, b) => {
                 let aVal, bVal;
                 switch(sortBy) {
@@ -140,7 +179,7 @@
                         return aVal.localeCompare(bVal);
                 }
             });
-    
+
             rows.forEach(row => tbody.appendChild(row));
         });
     </script>

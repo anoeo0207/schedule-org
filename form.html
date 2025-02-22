@@ -5,154 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tạo Sự Kiện Mới</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        input[type="text"],
-        input[type="date"],
-        input[type="time"],
-        textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        textarea {
-            height: 100px;
-            resize: vertical;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        button[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        button[type="reset"] {
-            background-color: #f44336;
-            color: white;
-        }
-
-        button[type="reset"]:hover {
-            background-color: #da190b;
-        }
-
-        .required {
-            color: red;
-            margin-left: 3px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { text-align: center; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 20px; border: none; cursor: pointer; transition: 0.3s; }
+        .submit-btn { background: #4CAF50; color: white; }
+        .cancel-btn { background: #f44336; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Thêm lịch công tác mới</h1>
-        <form id="eventForm" action="#" method="POST">
+        <form action="insert.php" method="POST">
             <div class="form-group">
-                <label for="eventName">Tên sự kiện<span class="required">*</span></label>
+                <label for="eventName">Tên sự kiện:</label>
                 <input type="text" id="eventName" name="eventName" required>
             </div>
-
             <div class="form-group">
-                <label for="eventDate">Ngày diễn ra<span class="required">*</span></label>
+                <label for="eventDate">Ngày:</label>
                 <input type="date" id="eventDate" name="eventDate" required>
             </div>
-
             <div class="form-group">
-                <label for="eventTime">Thời gian bắt đầu<span class="required">*</span></label>
+                <label for="eventTime">Thời gian:</label>
                 <input type="time" id="eventTime" name="eventTime" required>
             </div>
-
             <div class="form-group">
-                <label for="eventLocation">Địa điểm<span class="required">*</span></label>
+                <label for="eventLocation">Địa điểm:</label>
                 <input type="text" id="eventLocation" name="eventLocation" required>
             </div>
-
-            <div class="buttons">
-                <button type="reset" onclick="window.location.href='dashboard.html'">Huỷ</button>
-                <button type="submit">Thêm lịch công tác</button>
-            </div>
+            <button type="submit" class="submit-btn">Thêm sự kiện</button>
+            <button type="reset" class="cancel-btn">Huỷ</button>
         </form>
     </div>
-
-    <script>
-        // Thiết lập ngày tối thiểu là ngày hiện tại
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('eventDate').setAttribute('min', today);
-
-        // Xử lý sự kiện submit form
-        document.getElementById('eventForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Lấy giá trị từ form
-            const eventName = document.getElementById('eventName').value;
-            const eventDate = document.getElementById('eventDate').value;
-            const eventTime = document.getElementById('eventTime').value;
-            const eventLocation = document.getElementById('eventLocation').value;
-            const eventDescription = document.getElementById('eventDescription').value;
-
-            // Hiển thị thông tin đã nhập (có thể thay thế bằng code gửi dữ liệu đến server)
-            alert(`Sự kiện đã được tạo:\n
-                Tên: ${eventName}\n
-                Ngày: ${eventDate}\n
-                Thời gian: ${eventTime}\n
-                Địa điểm: ${eventLocation}\n`);
-        });
-    </script>
 </body>
 </html>
