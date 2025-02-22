@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: #003366;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 2vh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2vh;
+    border-bottom: 0.2vh solid #0066cc;
+    padding-bottom: 1vh;
+}
+
+.logo {
+    width: 8vh;
+    height: 8vh;
+    background-color: #fff;
+    border-radius: 50%;
+    margin-right: 2vh;
+}
+
+.title {
+    color: #00ccff;
+    font-size: 3vh;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #00ccff;
+    font-size: 2vh;
+}
+
+.schedule-title {
+    font-size: 2.5vh;
+    margin-bottom: 1vh;
+    color: #00ccff;
+}
+
+.fixed-header {
+    background-color: #004080;
+    padding: 1vh;
+    margin-bottom: 1vh;
+    border-bottom: 0.2vh solid #0066cc;
+    display: grid;
+    grid-template-columns: 10% 60% 10% 20%;
+    gap: 1vh;
+}
+
+.fixed-header div {
+    text-align: center;
+    font-weight: bold;
+    color: #00ccff;
+    font-size: 2vh;
+}
+
+.schedule-container {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.schedule-content {
+    animation: scroll 30s linear infinite;
+}
+
+@keyframes scroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+td {
+    padding: 1vh;
+    border-bottom: 0.1vh solid #0066cc;
+    font-size: 2vh;
+    vertical-align: top;
+}
+
+td:nth-child(1) { width: 10%; }
+td:nth-child(2) { width: 60%; }
+td:nth-child(3) { width: 10%; text-align: center; }
+td:nth-child(4) { width: 20%; }
+
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: #004080;
+    padding: 1vh;
+    margin-top: 2vh;
+}
+
+.marquee {
+    display: inline-block;
+    animation: marquee 30s linear infinite;
+    font-size: 2vh;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+@media (min-aspect-ratio: 16/9) {
+    .container {
+        max-width: 177.78vh;
+        margin: 0 auto;
+    }
+}

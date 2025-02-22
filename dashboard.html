@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Lịch Công Tác</title>
+    <link rel="stylesheet" href="style/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="header-container">
+        <div class="header-content">
+            <div class="header-left">
+                <h1>Quản Lý Lịch Công Tác</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Quản trị viên</div>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="window.location.href='login.html'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Đăng xuất
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="actions" style="margin-bottom: 30px;">
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> Xem bảng chính
+            </button>
+            <button class="btn btn-primary" onclick="window.location.href='form.html'">
+                <i class="fas fa-plus"></i> Thêm Lịch Công Tác
+            </button>
+        </div>
+
+        <div class="filters">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm lịch công tác...">
+            </div>
+            <div class="sort-options">
+                <label for="sortSelect">Sắp xếp theo:</label>
+                <select id="sortSelect">
+                    <option value="date-asc">Ngày (Tăng dần)</option>
+                    <option value="date-desc">Ngày (Giảm dần)</option>
+                    <option value="name">Tên sự kiện</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Phần table giữ nguyên -->
+        <div class="table-container">
+            <table id="eventsTable">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sự kiện</th>
+                        <th>Ngày</th>
+                        <th>Thời gian</th>
+                        <th>Địa điểm</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Họp Ban Giám đốc</td>
+                        <td>2024-02-25</td>
+                        <td>09:00</td>
+                        <td>Phòng họp A</td>
+                        <td>
+                            <button class="btn-icon edit" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Đào tạo nhân viên mới</td>
+                        <td>2024-02-26</td>
+                        <td>14:00</td>
+                        <td>Phòng đào tạo</td>
+                        <td>
+                            <button class="btn-icon edit" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Your existing script -->
+    <script>
+        // Xử lý tìm kiếm
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#eventsTable tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchText) ? '' : 'none';
+            });
+        });
+    
+        // Xử lý sắp xếp
+        document.getElementById('sortSelect').addEventListener('change', function(e) {
+            const sortBy = e.target.value;
+            const tbody = document.querySelector('#eventsTable tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+    
+            rows.sort((a, b) => {
+                let aVal, bVal;
+                switch(sortBy) {
+                    case 'date-asc':
+                        aVal = a.cells[2].textContent;
+                        bVal = b.cells[2].textContent;
+                        return aVal.localeCompare(bVal);
+                    case 'date-desc':
+                        aVal = a.cells[2].textContent;
+                        bVal = b.cells[2].textContent;
+                        return bVal.localeCompare(aVal);
+                    case 'name':
+                        aVal = a.cells[1].textContent;
+                        bVal = b.cells[1].textContent;
+                        return aVal.localeCompare(bVal);
+                }
+            });
+    
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    </script>
+</body>
+</html>
