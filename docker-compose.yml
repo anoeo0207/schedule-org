@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+
+    db:
+        image: mysql
+        restart: always
+        ports:
+            - "33061:3306"
+        environment:
+            MYSQL_ROOT_USER: root
+            MYSQL_ROOT_PASSWORD: system-3@1357
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass-away
