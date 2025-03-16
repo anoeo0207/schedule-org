@@ -181,6 +181,13 @@ api.get('/user', (req, res) => {
 
 // create API for insert a new user to the user table
 api.post('/user', (req, res) => {
+    // check if the request body has fields that are not allow to insert
+    // then return the error message
+    if (req.body.user_id || req.body.is_delete) {
+        res.json({ message: 'The request body contains fields that are not allow to insert' });
+        return;
+    }
+
     connection.query('INSERT INTO user SET ?', req.body, (err, rows) => {
         if (err) {
             console.log('Error in query');
@@ -192,6 +199,14 @@ api.post('/user', (req, res) => {
 
 // create API for update an existing user in the user table with specific user_id
 api.put('/user/:id', (req, res) => {
+
+    // check if the request body has the fields that are not allowed to update
+    // then return the error message
+    if (req.body.user_id || req.body.is_delete) {
+        res.json({ message: 'The request body contains fields that are not allow to update' });
+        return;
+    }
+
     connection.query('UPDATE user SET ? WHERE user_id = ?', [req.body, req.params.id], (err, rows) => {
         if (err) {
             console.log('Error in query');
@@ -202,8 +217,9 @@ api.put('/user/:id', (req, res) => {
 });
 
 // create API for delete an existing user in the user table with specific user_id
+// the delete process is a soft delete, the is_delete field will be set to TRUE
 api.delete('/user/:id', (req, res) => {
-    connection.query('DELETE FROM user WHERE user_id = ?', [req.params.id], (err, rows) => {
+    connection.query('UPDATE user SET is_delete = TRUE WHERE user_id = ?', [req.params.id], (err, rows) => {
         if (err) {
             console.log('Error in query');
             return;
