@@ -21,7 +21,7 @@ CREATE TABLE events (
     event_id INT AUTO_INCREMENT PRIMARY KEY ,
     event_name TEXT NOT NULL,
     event_time DATETIME NOT NULL,
-    created_date TIME NOT NULL ,
+    created_date DATETIME DEFAULT NOW(),
     event_place TEXT NOT NULL,
     created_user_id INT REFERENCES user(user_id)
 );
