@@ -84,7 +84,7 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch('fetch.php') 
+            fetch('http://192.168.1.108:3000/events/time/2025-01-01/2025-12-31') 
                 .then(response => response.json()) 
                 .then(data => {
                     const table = document.querySelector(".schedule-content table");
@@ -92,10 +92,10 @@
                     data.forEach(event => {
                         const row = document.createElement("tr");
                         row.innerHTML = `
-                            <td>${event.Ngay}</td>
-                            <td>${event.TenSuKien}</td>
-                            <td>${event.ThoiGian}</td>
-                            <td>${event.DiaDiem}</td>
+                            <td>${new Date(event.event_time).toLocaleDateString()}</td>
+                            <td>${event.event_name}</td>
+                            <td>${new Date(event.event_time).toLocaleTimeString('vi-VN', { hour12: false, hour: '2-digit', minute: '2-digit' })}</td>
+                            <td>${event.event_place}</td>
                         `;
                         table.appendChild(row);
                     });
