@@ -23,3 +23,18 @@ services:
             MYSQL_ROOT_PASSWORD: system-3@1357
             MYSQL_USER: user
             MYSQL_PASSWORD: pass-away
+
+# create nodejs container for running nodejs app
+# copy all files in ./backend to /usr/src/app
+# map port 3000 on host to port 3000 on container
+# using node:22 image
+# running after db container
+    nodejs:
+        build: ./backend/  # Build the Dockerfile in the current directory
+        ports:
+            - "3000:3000"  # Map port 3000 on the host to port 3000 in the container
+        environment:
+            DB_HOST: db  # Define the database host as the service name
+            DB_USER: root
+            DB_PASSWORD: system-3@1357
+            DB_NAME: schedule

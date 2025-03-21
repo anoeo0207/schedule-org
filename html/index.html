@@ -84,7 +84,7 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch('http://192.168.1.108:3000/events/time/2025-01-01/2025-12-31') 
+            fetch('http://localhost:3000/events/time/2025-01-01/2025-12-31') 
                 .then(response => response.json()) 
                 .then(data => {
                     const table = document.querySelector(".schedule-content table");

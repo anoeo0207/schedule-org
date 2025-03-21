@@ -37,11 +37,11 @@ const port = 3000;
 // database: schedule
 const mysql = require('mysql2');
 const connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'db',
     user: 'root',
     password: 'system-3@1357',
     database: 'schedule',
-    port: 33061
+    port: 3306
 });
 
 // connect to the database
