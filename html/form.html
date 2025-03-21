@@ -14,13 +14,14 @@
         input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
         button { padding: 10px 20px; border: none; cursor: pointer; transition: 0.3s; }
         .submit-btn { background: #4CAF50; color: white; }
+        .submit-btn:disabled { background: #ccc; color: #666; cursor: not-allowed; }
         .cancel-btn { background: #f44336; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Thêm lịch công tác mới</h1>
-        <form action="insert.php" method="POST">
+        <form>
             <div class="form-group">
                 <label for="eventName">Tên sự kiện:</label>
                 <input type="text" id="eventName" name="eventName" required>
@@ -37,9 +38,79 @@
                 <label for="eventLocation">Địa điểm:</label>
                 <input type="text" id="eventLocation" name="eventLocation" required>
             </div>
-            <button type="submit" class="submit-btn">Thêm sự kiện</button>
-            <button type="reset" class="cancel-btn">Huỷ</button>
+            <!-- submit button, disable until all filed are filled -->
+            <button class="submit-btn">Thêm sự kiện</button>
+            <button class="cancel-btn">Huỷ</button>
         </form>
+
+        <!-- Add event listener when click to  submit-btn" -->
+        <script>
+
+            // if click to cancel-btn, then redirect to dashboard
+            document.querySelector('.cancel-btn').addEventListener('click', function() {
+                window.location.href = '/dashboard.html';
+            });
+
+            // disable submit-btn if any field is empty event when the form is loaded
+            document.querySelector('.submit-btn').setAttribute('disabled', 'disabled');
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', function() {
+                    const eventName = document.querySelector('#eventName').value;
+                    const eventDate = document.querySelector('#eventDate').value;
+                    const eventTime = document.querySelector('#eventTime').value;
+                    const eventLocation = document.querySelector('#eventLocation').value;
+                    const submitBtn = document.querySelector('.submit-btn');
+                    
+                    // is any field empty, then using class submit-btn:disabled
+                    if (eventName === '' || eventDate === '' || eventTime === '' || eventLocation === '') {
+                        submitBtn.setAttribute('disabled', 'disabled');
+                    } else {
+                        submitBtn.removeAttribute('disabled');
+                    }
+                });
+            });
+
+            document.querySelector('.submit-btn').addEventListener('click', function(event) {
+                event.preventDefault();
+                const eventName = document.querySelector('#eventName').value;
+                const eventDate = document.querySelector('#eventDate').value;
+                const eventTime = document.querySelector('#eventTime').value;
+                const eventLocation = document.querySelector('#eventLocation').value;
+                
+                // combine eventDate and eventTime to a string in format "yyyy-mm-dd hh:mm:ss"
+                const eventDateTime = `${eventDate} ${eventTime}:00`;
+
+                // send a POST request to the server
+                fetch('http://localhost:3000/events', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        event_name: eventName,
+                        event_time: eventDateTime,
+                        event_place: eventLocation
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+
+                        // alert that add event success using bootstrap alert
+                        alert('Thêm sự kiện thành công!');
+                        // ask if user want to add more event
+                        // if user click OK, then reload the page
+                        // if user click Cancel, then redirect to dashboard
+                        
+                        if (confirm('Bạn có muốn thêm sự kiện khác không?')) {
+                            window.location.reload();
+                        } else
+                            window.location.href = '/dashboard.html';
+                    } else {
+                        alert('Thêm sự kiện thất bại!');
+                    }
+                })
+            });
+        </script>
     </div>
 </body>
 </html>
