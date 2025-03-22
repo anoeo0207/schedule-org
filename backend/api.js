@@ -2,8 +2,32 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const basicAuth = require('express-basic-auth')
 const api = express();
-const port = 3000;
+const port = 3001;
+
+// Define multiple users and their passwords
+const users = {
+    'admin': 'abcd_admin_124',
+    'admin2': 'abcd_admin_125',
+    'admin3': 'abcd_admin_126',
+};
+
+// Define the unauthorized response
+const getUnauthorizedResponse = (req) => {
+    return req.auth ? 'Credentials ' + req.auth.user + ':' + req.auth.password + ' rejected' : 'No credentials provided';
+}
+
+// create a basic authentication  middle ware 
+// only allow the user that is in the users object to access the API
+// do not apply the basic authentication to all api 
+// only apply to the API that need authentication
+const authMiddleware = basicAuth({
+    users,
+    challenge: true,
+    unauthorizedResponse: getUnauthorizedResponse
+});
+
 
 // create an API to retrieve data from database named: 'schedule'
 // the base has the following schema:
@@ -66,6 +90,10 @@ api.listen(port, () => {
 });
 
 // create API for retrieve data from events table with specific range of time
+// this API does not need authentication
+// the request has two parameters: start and end
+// the start and end are in the format of 'YYYY-MM-DD HH:MM:SS'
+// the API will return all the events that are in the range of time
 api.get('/events/time/:start/:end', (req, res) => {
     connection.query('SELECT * FROM events WHERE event_time BETWEEN ? AND ?', [req.params.start, req.params.end], (err, rows) => {
         if (err) {
@@ -90,7 +118,8 @@ api.get('/events/:id', (req, res) => {
 // create API for adding a new events to the events table with all the fields
 // the request body is a object that has following property:
 //  event_name, event_time, event_place, created_user_id
-api.post('/events', (req, res) => {
+// apply the basic authentication to this API
+api.post('/events', authMiddleware, (req, res) => {
 
     // check if the request body has fields that are not allow to insert
     // then return the error message
@@ -114,8 +143,7 @@ api.post('/events', (req, res) => {
 // the request body is a object that has following property:
 //  event_name, event_time, event_place
 // only allow update event that is not deleted
-
-api.put('/events/:id', (req, res) => {
+api.put('/events/:id', authMiddleware, (req, res) => {
 
     //check if the event is deleted
     connection.query('SELECT * FROM events WHERE event_id = ?', [req.params.id], (err, rows) => {
@@ -147,7 +175,7 @@ api.put('/events/:id', (req, res) => {
 
 // create API for deleting an existing events in the events table with specific event_id
 // the delete process is a soft delete, the is_delete field will be set to TRUE
-api.delete('/events/:id', (req, res) => {
+api.delete('/events/:id', authMiddleware, (req, res) => {
     connection.query('UPDATE events SET is_delete = TRUE WHERE event_id = ?', [req.params.id], (err, rows) => {
         if (err) {
             console.log('Error in query');
